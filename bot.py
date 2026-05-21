@@ -12,7 +12,7 @@ TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_KEY", "")
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 WEATHER_KEY = os.environ.get("WEATHER_KEY", "")
-HER_CITY = "Chengdu"
+HER_CITY = "Mianyang"
 
 # ===== 数据库 =====
 def get_db():
