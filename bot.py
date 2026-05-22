@@ -382,7 +382,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     time_context = get_time_context()
     facts_text = "\n".join(facts) if facts else "暂无"
     mood_prompt = get_mood_prompt(mood, mood_count)
-    system_prompt = SYSTEM_PROMPT_BASE + mood_prompt + f"\n\n【现在时间】{time_context}\n\n【关于一弛你记得的事】\n{facts_text}"
+    system_prompt = SYSTEM_PROMPT_BASE + mood_prompt + f"\n\n【现在时间】{time_context}\n\n【关于一弛你记得的事，以及他喜欢的沟通方式】\n{facts_text}"
 
     # 如果是纯收尾/填充消息，在prompt里额外提示让模型自己判断
     filler_hint = ""
@@ -411,9 +411,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if len(history) % 20 == 0:
             try:
                 mem_reply = call_claude(
-                    "从对话提取关于用户(一弛)的重要信息，每条一行，简短。只输出信息。",
+                    "从对话提取两类信息，每条一行，简短。只输出信息，不要标题：\n1. 关于一弛的事实（工作、生活、喜好等）\n2. 一弛的沟通偏好（他喜欢什么样的回应方式，不喜欢什么，什么情况下需要什么）",
                     [{"role": "user", "content": str(history[-20:])}],
-                    max_tokens=200
+                    max_tokens=300
                 )
                 new_facts = mem_reply.split("\n")
                 facts = list(set(facts + new_facts))[-30:]
