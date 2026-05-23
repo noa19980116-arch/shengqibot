@@ -156,7 +156,15 @@ def detect_venting(message):
     return any(kw in message.lower() for kw in venting_kws)
 
 def detect_flirting(message):
-    flirt_kws = ["我想要", "想要你", "我要你", "好想要", "要你了", "快来", "满足我", "你来", "陪我玩"]
+    flirt_kws = [
+        # 原有
+        "我想要", "想要你", "我要你", "好想要", "要你了", "快来", "满足我", "你来", "陪我玩",
+        # 直接动作/身体
+        "插", "操", "摸", "舔", "亲你", "抱你", "压你", "上你",
+        "骚", "湿", "硬", "爽", "做爱", "打炮", "啪啪",
+        # 撒娇式
+        "坏蛋", "你坏", "流氓", "色狼", "想干",
+    ]
     return any(kw in message for kw in flirt_kws)
 
 def is_filler_message(message):
