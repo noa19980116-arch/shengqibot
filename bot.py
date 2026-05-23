@@ -456,6 +456,7 @@ async def proactive_check(context):
                 d = get_user_data(user_id)
                 d["morning_sent"] = True
                 d["night_sent"] = False
+                d["history"].append({"role": "assistant", "content": reply})
                 save_user_data(user_id, d)
 
             elif hour_bj == 1 and not night_sent:
@@ -466,6 +467,7 @@ async def proactive_check(context):
                 await send_in_sentences(bot, reply, chat_id=user_id)
                 d = get_user_data(user_id)
                 d["night_sent"] = True
+                d["history"].append({"role": "assistant", "content": reply})
                 save_user_data(user_id, d)
 
             elif last_msg and 10 <= hour_bj < 24:
@@ -479,6 +481,7 @@ async def proactive_check(context):
                     await send_in_sentences(bot, reply, chat_id=user_id)
                     d = get_user_data(user_id)
                     d["last_user_msg"] = now_utc
+                    d["history"].append({"role": "assistant", "content": reply})
                     save_user_data(user_id, d)
         except Exception as e:
             print(f"Proactive error for {user_id}: {e}")
