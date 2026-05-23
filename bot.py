@@ -392,6 +392,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await asyncio.sleep(0.8)
     await update.message.reply_text("想我了？")
 
+async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    data = get_user_data(user_id)
+    data["history"] = []
+    data["mood"] = "normal"
+    data["mood_count"] = 0
+    save_user_data(user_id, data)
+    await update.message.reply_text("好了，重新开始")
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user_message = update.message.text
@@ -528,6 +537,7 @@ def main():
     init_db()
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("reset", reset))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     app.job_queue.run_repeating(proactive_check, interval=1800, first=10)
     print("Bot启动成功！")
